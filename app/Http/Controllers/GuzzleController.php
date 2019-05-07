@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use GuzzleHttp\Promise;
-
+use GuzzleHttp\RequestOptions;
 
 class GuzzleController extends Controller
 {
@@ -35,7 +35,25 @@ class GuzzleController extends Controller
             'base_uri' => 'https://api.productive.io/api/v2',
         ]);
 
-        $request = new GuzzleRequest('POST', 'https://api.productive.io/api/v2/sessions', [
+        $response = $client->post('/api/v2/sessions',[
+            'headers' => [
+                'Content-Type' => 'application/vnd.api+json',
+            ],
+            'json' => [
+                'data' => [
+                   'type' => 'sessions',
+                    'attributes' => [
+                        'email' => 'tvornica.studenti@gmail.com',
+                        'password' => 'tvornica456',
+                    ]
+                ]
+            ]
+            
+        ]);
+
+        echo $response->getBody();
+
+        /*$request = new GuzzleRequest('POST', 'https://api.productive.io/api/v2/sessions', [
             'Content-Type' => 'application/vnd.api+json',
             'auth' => [
                 'email' => 'tvornica.studenti@gmail.com',
@@ -43,7 +61,7 @@ class GuzzleController extends Controller
             ],
         ]);
         $response = $client->send($request);
-        echo $response->getBody();
+        echo $response->getBody(); */
       
     }
 }
